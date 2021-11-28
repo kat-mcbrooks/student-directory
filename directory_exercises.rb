@@ -12,7 +12,7 @@ def input_students
   while 
     #add the student hash to the array
     students << {name: name, cohort: cohort}
-    puts "Now we have #{students.count} students"
+    puts students.count < 2 ? "Now we have 1 student" : "Now we have #{students.count} students"
     #get another name from the user
     p user_input = gets.chomp
     break if user_input.empty? # need this condition before the .to_sym method because when user hits return, the array will be empty, therefore making name and cohort evaluate to nil. Can't 
@@ -27,16 +27,28 @@ def input_students
 end
 
 def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy".center(150)
+  puts "-------------".center(150)
 end
 
 def print(students)
   n = 0 
   while n < students.length
-    puts "#{n+1}. #{students[n][:name]}, (#{students[n][:cohort]} cohort)"
+    puts "#{n+1}. #{students[n][:name]}, (#{students[n][:cohort]} cohort)".center(150)
     n += 1
   end
+end
+
+def cohort_groups(students)
+  sorted_by_cohort = {}
+  students.each do |student|
+    cohort = student[:cohort]
+    if sorted_by_cohort[cohort] == nil # does cohort already exist as a key on the hash? If not, create it and set equal to an empty array
+      sorted_by_cohort[cohort] = []
+    end
+    sorted_by_cohort[cohort] << student[:name] # add name to the array
+  end
+  p sorted_by_cohort
 end
 
 def print_footer(students)
@@ -48,3 +60,4 @@ students = input_students # the students variable will equal the return value of
 print_header
 print(students)
 print_footer(students)
+cohort_groups(students)
